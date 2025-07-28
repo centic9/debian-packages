@@ -1,5 +1,5 @@
 name: Build Debian Packages with Debcraft
-run-name: Build Debian Packages with Debcraft
+run-name: Build Debian Packages of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}
 on:
   workflow_dispatch:
     inputs:
@@ -14,7 +14,7 @@ on:
         
 jobs:
   build-debs:
-    name: build-debs
+    name: build-debs of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
