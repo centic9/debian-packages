@@ -32,6 +32,7 @@ jobs:
           ref: ${{ github.event.inputs.gh_ref }}
           # this is required for gbp to work properly
           fetch-tags: true
+          # not sure why this was needed, fetch-tags should fetch the necessary refs, but somehow did not
           fetch-depth: 0
       
       - name: checkout debcraft
