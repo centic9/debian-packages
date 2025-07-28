@@ -1,0 +1,58 @@
+ame: Build Debian Packages with Debcraft
+run-name: Build Debian Packages with Debcraft
+on:
+  workflow_dispatch:
+    inputs:
+      gh_repo:
+        description: 'Github Repository to build, specify as simple <owner>/<repo-name>'
+        required: true
+        default: 'centic9/mtools-ppa'
+      gh_ref:
+        description: 'Which branch or tag to build'
+        required: true
+        default: 'ppa/4.0.43-1'
+        
+jobs:
+  build-debs:
+    name: build-debs
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # , bullseye, sid, bookworm
+        codename: [trixie]
+        # , arm64, armhf
+        arch: [amd64]
+    steps:
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.inputs.gh_repo }}
+          ref: ${{ github.event.inputs.gh_ref }}
+          # this is required for gbp to work properly
+          fetch-tags: true
+      
+      - name: checkout debcraft
+        uses: actions/checkout@v4
+        with:
+          # https://github.com/ottok/debcraft
+          repository: ottok/debcraft
+          path: /tmp/debcraft
+          ref: 512b4c356c842ecf7aecb81d23cb4947a910942a
+    
+      - name: install required software
+        run: sudo apt install -y make podman
+
+      - name: install debcraft
+        working-directory: /tmp/debcraft
+        run: make install-local
+
+      - name: run build
+        run: $HOME/.local/bin/debcraft build --distribution ${{ matrix.codename }}
+
+      - name: save artifact
+        # https://github.com/actions/upload-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.codename }}
+          path: /tmp/debcraft-build-*/
