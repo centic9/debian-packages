@@ -59,4 +59,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.codename }}
-          path: /tmp/debcraft-build-*/
+          path: debcraft-build-*/
