@@ -32,6 +32,7 @@ jobs:
           ref: ${{ github.event.inputs.gh_ref }}
           # this is required for gbp to work properly
           fetch-tags: true
+          fetch-depth: 0
       
       - name: checkout debcraft
         uses: actions/checkout@v4
