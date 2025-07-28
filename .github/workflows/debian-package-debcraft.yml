@@ -1,4 +1,4 @@
-ame: Build Debian Packages with Debcraft
+name: Build Debian Packages with Debcraft
 run-name: Build Debian Packages with Debcraft
 on:
   workflow_dispatch:
