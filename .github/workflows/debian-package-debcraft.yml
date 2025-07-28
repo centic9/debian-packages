@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ github.event.inputs.gh_repo }}
+          path: repo
           ref: ${{ github.event.inputs.gh_ref }}
           # this is required for gbp to work properly
           fetch-tags: true
@@ -37,17 +38,18 @@ jobs:
         with:
           # https://github.com/ottok/debcraft
           repository: ottok/debcraft
-          path: /tmp/debcraft
+          path: debcraft
           ref: 512b4c356c842ecf7aecb81d23cb4947a910942a
     
       - name: install required software
         run: sudo apt install -y make podman
 
       - name: install debcraft
-        working-directory: /tmp/debcraft
+        working-directory: debcraft
         run: make install-local
 
       - name: run build
+        working-directory: repo
         run: $HOME/.local/bin/debcraft build --distribution ${{ matrix.codename }}
 
       - name: save artifact
