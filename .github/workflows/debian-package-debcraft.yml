@@ -19,8 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # , bullseye, sid, bookworm
-        codename: [trixie]
+        codename: [bookworm, trixie, sid, noble]
         # , arm64, armhf
         arch: [amd64]
     steps:
@@ -58,5 +57,5 @@ jobs:
         # https://github.com/actions/upload-artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.codename }}
+          name: ${{ matrix.codename }}-${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}
           path: debcraft-build-*/
