@@ -57,9 +57,13 @@ jobs:
         working-directory: repo
         run: $HOME/.local/bin/debcraft build --distribution ${{ matrix.codename }}
 
+      - name: Build artifact name
+        id: artifact-name
+        run: echo "ARTIFACT_NAME=${{ matrix.codename }}-${{ matrix.arch }}-${{ github.event.inputs.gh_repo }}-${{ github.event.inputs.gh_ref }}-${{ steps.fetch-commit.outputs.GIT_COMMIT }}" | sed -e 's:/:_/g' >> "$GITHUB_OUTPUT"
+
       - name: save binary artifact
         # https://github.com/actions/upload-artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.codename }}-${{ matrix.arch }}-${{ github.event.inputs.gh_repo }}-${{ github.event.inputs.gh_ref }}-${{ steps.fetch-commit.outputs.GIT_COMMIT }}
+          name: ${{ steps.artifact-name.outputs.ARTIFACT_NAME }}
           path: debcraft-build-*/
