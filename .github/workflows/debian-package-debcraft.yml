@@ -25,6 +25,7 @@ jobs:
     steps:
       - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }}
         uses: actions/checkout@v4
+        id: checkout
         with:
           repository: ${{ github.event.inputs.gh_repo }}
           path: repo
@@ -33,10 +34,6 @@ jobs:
           fetch-tags: true
           # not sure why this was needed, fetch-tags should fetch the necessary refs, but somehow did not
           fetch-depth: 0
-
-      - name: Determine commit-id of this run
-        id: fetch-commit
-        run: echo "GIT_COMMIT=`git rev-parse HEAD`" >> "$GITHUB_OUTPUT"
 
       - name: checkout debcraft
         uses: actions/checkout@v4
@@ -59,7 +56,7 @@ jobs:
 
       - name: Build artifact name
         id: artifact-name
-        run: echo "ARTIFACT_NAME=${{ matrix.codename }}-${{ matrix.arch }}-${{ github.event.inputs.gh_repo }}-${{ github.event.inputs.gh_ref }}-${{ steps.fetch-commit.outputs.GIT_COMMIT }}" | sed -e 's:/:_/g' >> "$GITHUB_OUTPUT"
+        run: echo "ARTIFACT_NAME=${{ matrix.codename }}-${{ matrix.arch }}-${{ github.event.inputs.gh_repo }}-${{ github.event.inputs.gh_ref }}-${{ steps.checkout.outputs.commit }}" | sed -e 's:/:_:g' >> "$GITHUB_OUTPUT"
 
       - name: save binary artifact
         # https://github.com/actions/upload-artifact
