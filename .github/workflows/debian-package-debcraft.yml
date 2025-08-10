@@ -41,7 +41,7 @@ jobs:
           # https://github.com/ottok/debcraft
           repository: ottok/debcraft
           path: debcraft
-          ref: 512b4c356c842ecf7aecb81d23cb4947a910942a
+          ref: d2059df0dba149df4e0d71c899b4fbd6505a8ce0
     
       - name: install required software
         run: sudo apt install -y make podman
