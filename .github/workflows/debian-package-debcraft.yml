@@ -27,7 +27,7 @@ jobs:
         # , arm64, armhf
         arch: [amd64]
     steps:
-      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ use_salsa }}
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ github.event.inputs.use_salsa }}
         uses: actions/checkout@v4
         id: checkout
         with:
@@ -40,7 +40,7 @@ jobs:
           fetch-depth: 0
         if: ${{ github.event.inputs.use_salsa != 'true' }}
 
-      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ use_salsa }}
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ github.event.inputs.use_salsa }}
         id: checkout
         run: git clone --depth=1 --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
         if: ${{ github.event.inputs.use_salsa == 'true' }}
