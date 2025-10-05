@@ -11,7 +11,11 @@ on:
         description: 'Which branch or tag to build'
         required: true
         default: 'ppa/4.0.43-1'
-        
+      use_salsa:
+        description: 'Specify true if gh_repo and gh_ref point to a repository on the Debian Salsa hosting platform'
+        required: false
+        default: 'false'
+
 jobs:
   build-debs:
     name: build-debs of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }}
@@ -23,7 +27,7 @@ jobs:
         # , arm64, armhf
         arch: [amd64]
     steps:
-      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }}
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ use_salsa }}
         uses: actions/checkout@v4
         id: checkout
         with:
@@ -34,6 +38,12 @@ jobs:
           fetch-tags: true
           # not sure why this was needed, fetch-tags should fetch the necessary refs, but somehow did not
           fetch-depth: 0
+        if: ${{ github.event.inputs.use_salsa != 'true' }}
+
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ use_salsa }}
+        id: checkout
+        run: git clone --depth=1 --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
+        if: ${{ github.event.inputs.use_salsa == 'true' }}
 
       - name: checkout debcraft
         uses: actions/checkout@v4
@@ -42,7 +52,7 @@ jobs:
           repository: ottok/debcraft
           path: debcraft
           ref: d2059df0dba149df4e0d71c899b4fbd6505a8ce0
-    
+
       - name: install required software
         run: sudo apt install -y make podman
 
