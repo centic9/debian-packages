@@ -42,7 +42,9 @@ jobs:
 
       - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ github.event.inputs.use_salsa }}
         id: checkout-salsa
-        run: git clone --depth=1 --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
+        # Removed "--depth=1" as otherwise some of the git-commands used by debcraft and gbp will fail
+        # the checkout-action does this somehow, but I could not yet find out how this can be done with git commands directly
+        run: git clone --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
         if: ${{ github.event.inputs.use_salsa == 'true' }}
 
       - name: checkout debcraft
