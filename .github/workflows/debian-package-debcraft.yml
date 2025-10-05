@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        codename: [bookworm, trixie, sid, noble]
+        codename: [bookworm, trixie, forky, sid, noble]
         # , arm64, armhf
         arch: [amd64]
     steps:
