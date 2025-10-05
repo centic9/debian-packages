@@ -44,7 +44,9 @@ jobs:
         id: checkout-salsa
         # Removed "--depth=1" as otherwise some of the git-commands used by debcraft and gbp will fail
         # the checkout-action does this somehow, but I could not yet find out how this can be done with git commands directly
-        run: git clone --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
+        run: |
+          git clone --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
+          echo "commit=$(git rev-parse HEAD)\n" >> $GITHUB_OUTPUT
         if: ${{ github.event.inputs.use_salsa == 'true' }}
 
       - name: checkout debcraft
@@ -69,7 +71,7 @@ jobs:
 
       - name: Build artifact name
         id: artifact-name
-        run: echo "ARTIFACT_NAME=${{ matrix.codename }}@${{ matrix.arch }}@${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}@${{ steps.checkout.outputs.commit }}" | sed -e 's:/:_:g' >> "$GITHUB_OUTPUT"
+        run: echo "ARTIFACT_NAME=${{ matrix.codename }}@${{ matrix.arch }}@${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}@${{ steps.checkout-github.outputs.commit }}${{ steps.checkout-salsa.outputs.commit }}" | sed -e 's:/:_:g' >> "$GITHUB_OUTPUT"
 
       - name: save binary artifact
         # https://github.com/actions/upload-artifact
