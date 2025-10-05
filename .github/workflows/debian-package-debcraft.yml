@@ -48,7 +48,7 @@ jobs:
           set -eu
           git clone --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
           cd repo
-          echo "commit=$(git rev-parse HEAD)\n" >> $GITHUB_OUTPUT
+          echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         if: ${{ github.event.inputs.use_salsa == 'true' }}
 
       - name: checkout debcraft
