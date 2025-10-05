@@ -45,7 +45,9 @@ jobs:
         # Removed "--depth=1" as otherwise some of the git-commands used by debcraft and gbp will fail
         # the checkout-action does this somehow, but I could not yet find out how this can be done with git commands directly
         run: |
+          set -eu
           git clone --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
+          cd repo
           echo "commit=$(git rev-parse HEAD)\n" >> $GITHUB_OUTPUT
         if: ${{ github.event.inputs.use_salsa == 'true' }}
 
