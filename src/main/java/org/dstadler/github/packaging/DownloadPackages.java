@@ -43,6 +43,7 @@ public class DownloadPackages {
         Preconditions.checkState(new File(ROOT_DIR).isDirectory() || new File(ROOT_DIR).mkdirs(),
             "Could not create directories at %s", ROOT_DIR);
 
+        int downloaded = 0;
         for (Artifact artifact : artifacts) {
             String name = artifact.name;
 
@@ -67,7 +68,10 @@ public class DownloadPackages {
             });
 
             FileUtils.writeStringToFile(checkFile, "", StandardCharsets.UTF_8);
+            downloaded++;
         }
+
+        System.out.println("Downloaded " + downloaded + " artefacts");
     }
 
     public static List<Artifact> getAvailableArtifacts(GitHub github) throws IOException {
