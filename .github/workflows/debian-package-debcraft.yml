@@ -27,7 +27,7 @@ on:
 
 jobs:
   build-debs:
-    name: build-debs of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }}
+    name: Build ${{ matrix.codename }}-${{ matrix.arch }} of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
