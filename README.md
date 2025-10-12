@@ -11,14 +11,24 @@ A possible solution is to host the building logic in a separate repository and f
 
 See [debian-package-debcraft.yml](https://github.com/centic9/debian-packages/blob/main/.github/workflows/debian-package-debcraft.yml) for a resulting Github Action which can build any package as long as sources are available in a repository on GitHub.
 
-# DownloadPackages
+# Java Applications
+
+## DownloadPackages
 
 Used to fetch all resulting artifacts
 
-# ListArtifacts
+## ListArtifacts
 
 Lists resulting artifacts
 
-# TriggerBuilds
+## TriggerBuilds
 
 Trigger builds for any newer branch on a number of repositories on GitHub.
+
+## Note: Token Authentication
+
+Without providing an authentication token for GitHub access you will be heavily 
+throttled and execution will likely take a long time or time out.
+
+In order to provide a GitHub token, you can pass an environment variable 
+`GITHUB_TOKEN` with a working token.
