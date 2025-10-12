@@ -24,6 +24,10 @@ import java.util.zip.ZipInputStream;
 import static org.dstadler.github.packaging.ListArtifacts.REPO_DEBIAN_PACKAGES;
 import static org.dstadler.github.packaging.ListArtifacts.WORKFLOW_ID;
 
+/**
+ * Download all build artefacts from running the GitHub Action
+ * "Build Debian Packages with Debcraft" at https://github.com/centic9/debian-packages/actions
+ */
 public class DownloadPackages {
     // bookworm@amd64@ottok_debcraft@main@512b4c356c842ecf7aecb81d23cb4947a910942a
     protected static final Pattern NAME_REGEX = Pattern.compile("([a-z]+)@([a-z0-9]+)@([-a-z0-9_]+)@([-a-z0-9_.+]+)@([0-9a-f]+)");

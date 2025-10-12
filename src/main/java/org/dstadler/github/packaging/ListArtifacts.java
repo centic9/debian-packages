@@ -8,23 +8,19 @@ import org.kohsuke.github.GitHub;
 
 import java.io.IOException;
 
+/**
+ * Lists all built artefacts in the GitHub Repository
+ * at https://github.com/centic9/debian-packages/actions
+ */
 public class ListArtifacts {
 
     public static final String REPO_DEBIAN_PACKAGES = "centic9/debian-packages";
 
-    // "Build Debian Packages with Debcraft"
+    // ID of GitHub Action "Build Debian Packages with Debcraft"
     public static final long WORKFLOW_ID = 177606114L;
 
     public static void main(String[] args) throws IOException {
         GitHub github = BaseSearch.connect();
-
-        /*for (GHRepository repository : github.getUser("centic9").listRepositories()) {
-            if (!repository.getName().endsWith("-ppa")) {
-                continue;
-            }
-
-            System.out.println("Repository: " + repository.getName());
-        }*/
 
         GHRepository repository = github.getRepository(REPO_DEBIAN_PACKAGES);
         for (GHWorkflow workflow : repository.listWorkflows()) {

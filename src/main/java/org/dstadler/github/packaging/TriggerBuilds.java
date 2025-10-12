@@ -17,6 +17,11 @@ import java.util.regex.Pattern;
 import static org.dstadler.github.packaging.ListArtifacts.REPO_DEBIAN_PACKAGES;
 import static org.dstadler.github.packaging.ListArtifacts.WORKFLOW_ID;
 
+/**
+ * Iterate over projects name '...-ppa" with some exclusions and additions
+ * and triggers builds of the latest branch that is detected via the
+ * GitHub Action "Build Debian Packages with Debcraft" at https://github.com/centic9/debian-packages/actions
+ */
 public class TriggerBuilds {
     // add some other GitHub repos for building
     private static final List<Pair<String,String>> REPOS_TO_ADD = List.of(
