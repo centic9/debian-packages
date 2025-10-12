@@ -1,0 +1,31 @@
+apply plugin: 'java'
+
+java {
+    toolchain {
+        sourceCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.dstadler:commons-dost:1.4.3'
+    implementation 'org.kohsuke:github-api:1.329'
+    implementation 'com.google.guava:guava:33.5.0-jre'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.13.4'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
+
+    testImplementation 'org.dstadler:commons-test:1.0.0.22'
+}
+
+wrapper {
+    gradleVersion = '8.14.3'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}

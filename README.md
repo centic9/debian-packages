@@ -10,3 +10,15 @@ Unfortunately you cannot put a file in the directory .github/workflows directly 
 A possible solution is to host the building logic in a separate repository and fetch the proper sources for the package via parameters to the workflow.
 
 See [debian-package-debcraft.yml](https://github.com/centic9/debian-packages/blob/main/.github/workflows/debian-package-debcraft.yml) for a resulting Github Action which can build any package as long as sources are available in a repository on GitHub.
+
+# DownloadPackages
+
+Used to fetch all resulting artifacts
+
+# ListArtifacts
+
+Lists resulting artifacts
+
+# TriggerBuilds
+
+Trigger builds for any newer branch on a number of repositories on GitHub.
