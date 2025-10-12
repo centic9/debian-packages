@@ -23,7 +23,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        codename: [bookworm, trixie, forky, sid, noble]
+        # Running debcraft with forky fails with "Container baseimage mapping not implemented for forky"
+        codename: [bookworm, trixie, sid, noble]
         # , arm64, armhf
         arch: [amd64]
     steps:
