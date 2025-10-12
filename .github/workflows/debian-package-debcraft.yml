@@ -1,5 +1,5 @@
 name: Build Debian Packages with Debcraft
-run-name: Build Debian Packages of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} with Salsa ${{ github.event.inputs.use_salsa }}
+run-name: Building ${{ github.event.inputs.use_salsa && 'Salsa' || 'GitHub' }} - ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}
 on:
   workflow_dispatch:
     inputs:
