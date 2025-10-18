@@ -19,11 +19,13 @@ on:
         description: Allows to test with a different version of the Debcraft tool
         required: false
         # https://github.com/ottok/debcraft
-        default: 'ottok/debcraft'
+        # ottok/debcraft
+        default: 'centic9/debcraft'
       debcraft_ref:
         description: Allows to test with a different version of the Debcraft tool
         required: false
-        default: 'd2059df0dba149df4e0d71c899b4fbd6505a8ce0'
+        # d2059df0dba149df4e0d71c899b4fbd6505a8ce0
+        default: '102e4ed24312d84b1cba163f79c4fb6745b06ae7'
 
 jobs:
   build-debs:
