@@ -24,8 +24,17 @@ import static org.dstadler.github.packaging.ListArtifacts.WORKFLOW_ID;
  */
 public class TriggerBuilds {
     // add some other GitHub repos for building
-    private static final List<Pair<String,String>> REPOS_TO_ADD = List.of(
+    private static final List<Pair<String,String>> REPOS_TO_ADD_GITHUB = List.of(
+    );
+
+    // add some other Salsa repos for building
+    private static final List<Pair<String,String>> REPOS_TO_ADD_SALSA = List.of(
         Pair.of("ottok/debcraft", "main")
+    );
+
+    // add some other Codeberg repos for building
+    private static final List<Pair<String,String>> REPOS_TO_ADD_CODEBERG = List.of(
+        Pair.of("Unit193/yt-dlp", "master")
     );
 
     // allow to blacklist some repos which are not necessary anymore
@@ -89,7 +98,9 @@ public class TriggerBuilds {
             }
         }
         System.out.println("Found " + builds.size() + " repos before applying ignores");
-        builds.addAll(REPOS_TO_ADD);
+        builds.addAll(REPOS_TO_ADD_GITHUB);
+        builds.addAll(REPOS_TO_ADD_SALSA);
+        builds.addAll(REPOS_TO_ADD_CODEBERG);
 
         List<DownloadPackages.Artifact> artifacts = DownloadPackages.getAvailableArtifacts(github);
         System.out.println("Found " + artifacts.size() + " artifacts and " + builds.size() + " repos to build: " + builds);
@@ -109,11 +120,16 @@ public class TriggerBuilds {
         GHRepository repository = github.getRepository(REPO_DEBIAN_PACKAGES);
 
         for (Pair<String, String> build : builds) {
+            String hosting = REPOS_TO_ADD_SALSA.contains(build) ? "salsa" :
+                    REPOS_TO_ADD_CODEBERG.contains(build) ? "codeberg" :
+                    "github";
+
             // trigger workflow for this repository and the found "latest" branch
             System.out.println("Trigger package-build for repository " + build.getKey() + " at " + build.getValue());
             repository.getWorkflow(WORKFLOW_ID).dispatch("main", Map.of(
                     "gh_repo", build.getKey(),
-                    "gh_ref", build.getValue()));
+                    "gh_ref", build.getValue(),
+                    "hosting", hosting));
         }
     }
 
