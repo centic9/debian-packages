@@ -1,5 +1,5 @@
 name: Build Debian Packages with Debcraft
-run-name: Building ${{ github.event.inputs.use_salsa != 'true' && 'GitHub' || 'Salsa' }} - ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}
+run-name: Building ${{ github.event.inputs.hosting }} - ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}
 on:
   workflow_dispatch:
     inputs:
@@ -11,10 +11,10 @@ on:
         description: 'Which branch or tag to build'
         required: true
         default: 'ppa/4.0.43-1'
-      use_salsa:
-        description: 'Specify true if gh_repo and gh_ref point to a repository on the Debian Salsa hosting platform'
+      hosting:
+        description: 'Specify salsa if gh_repo and gh_ref point to a repository on the Debian Salsa hosting platform or codeberg for hosting on codeberg.org'
         required: false
-        default: 'false'
+        default: 'github'
       debcraft_repo:
         description: Allows to test with a different version of the Debcraft tool
         required: false
@@ -36,7 +36,7 @@ jobs:
         # , arm64, armhf
         arch: [amd64]
     steps:
-      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ github.event.inputs.use_salsa }}
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Hosting ${{ github.event.inputs.hosting }}
         uses: actions/checkout@v4
         id: checkout-github
         with:
@@ -47,9 +47,9 @@ jobs:
           fetch-tags: true
           # not sure why this was needed, fetch-tags should fetch the necessary refs, but somehow did not
           fetch-depth: 0
-        if: ${{ github.event.inputs.use_salsa != 'true' }}
+        if: ${{ github.event.inputs.hosting == 'github' }}
 
-      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ github.event.inputs.use_salsa }}
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Salsa ${{ github.event.inputs.hosting }}
         id: checkout-salsa
         # Removed "--depth=1" as otherwise some of the git-commands used by debcraft and gbp will fail
         # the checkout-action does this somehow, but I could not yet find out how this can be done with git commands directly
@@ -58,7 +58,18 @@ jobs:
           git clone --branch ${{ github.event.inputs.gh_ref }} https://salsa.debian.org/${{ github.event.inputs.gh_repo }}.git repo
           cd repo
           echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-        if: ${{ github.event.inputs.use_salsa == 'true' }}
+        if: ${{ github.event.inputs.hosting == 'salsa' }}
+
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Github ${{ github.event.inputs.hosting }}
+        id: checkout-codeberg
+        # Removed "--depth=1" as otherwise some of the git-commands used by debcraft and gbp will fail
+        # the checkout-action does this somehow, but I could not yet find out how this can be done with git commands directly
+        run: |
+          set -eu
+          git clone --branch ${{ github.event.inputs.gh_ref }} https://codeberg.org/${{ github.event.inputs.gh_repo }}.git repo
+          cd repo
+          echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        if: ${{ github.event.inputs.hosting == 'codeberg' }}
 
       - name: checkout debcraft
         id: checkout-debcraft
@@ -81,7 +92,7 @@ jobs:
 
       - name: Build artifact name
         id: artifact-name
-        run: echo "ARTIFACT_NAME=${{ matrix.codename }}@${{ matrix.arch }}@${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}@${{ steps.checkout-github.outputs.commit }}${{ steps.checkout-salsa.outputs.commit }}" | sed -e 's:/:_:g' >> "$GITHUB_OUTPUT"
+        run: echo "ARTIFACT_NAME=${{ matrix.codename }}@${{ matrix.arch }}@${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}@${{ steps.checkout-github.outputs.commit }}${{ steps.checkout-salsa.outputs.commit }}${{ steps.checkout-codeberg.outputs.commit }}" | sed -e 's:/:_:g' >> "$GITHUB_OUTPUT"
 
       - name: save binary artifact
         # https://github.com/actions/upload-artifact
