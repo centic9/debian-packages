@@ -99,4 +99,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.artifact-name.outputs.ARTIFACT_NAME }}
-          path: debcraft-build-*/
+          # https://github.com/actions/upload-artifact?tab=readme-ov-file#upload-using-multiple-paths-and-exclusions
+          path: |
+            debcraft-build-*/
+            /home/runner/.cache/debcraft/debcraft-build-*/
