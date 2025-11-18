@@ -90,9 +90,16 @@ jobs:
         working-directory: repo
         run: $HOME/.local/bin/debcraft build --distribution ${{ matrix.codename }}
 
-      - name: Build artifact name
+      - name: build artifact name
         id: artifact-name
         run: echo "ARTIFACT_NAME=${{ matrix.codename }}@${{ matrix.arch }}@${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }}@${{ steps.checkout-github.outputs.commit }}${{ steps.checkout-salsa.outputs.commit }}${{ steps.checkout-codeberg.outputs.commit }}" | sed -e 's:/:_:g' >> "$GITHUB_OUTPUT"
+
+      - name: replace colons in filenames to allow publishing as artifact
+        run: |
+          for f in $(find debcraft-build-* /home/runner/.cache/debcraft/debcraft-build-* -type f -name "*:*"); do
+            echo Replace colon in "$f"
+            mv "$f" "$(echo "$f" | tr ':' '-')"
+          done
 
       - name: save binary artifact
         # https://github.com/actions/upload-artifact
