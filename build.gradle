@@ -29,3 +29,35 @@ wrapper {
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
 }
+
+def gitHubToken = new ByteArrayOutputStream()
+tasks.register('getGitHubToken', Exec) {
+    description = 'Try to get GITHUB_TOKEN from the password managed'
+
+    workingDir '.'
+    commandLine 'bash', '-c', 'pass ls Programming/GitHub | grep Token-Repository | sed -e \'s/Token-Repository: //g\''
+    standardOutput = gitHubToken;
+}
+
+tasks.register('downloadPackages', JavaExec) {
+    description = 'Fetch built packages from the GitHub Action artifacts'
+
+    environment "GITHUB_TOKEN", gitHubToken
+    mainClass = 'org.dstadler.github.packaging.DownloadPackages'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs = ['-Xmx128m']
+}
+
+tasks.register('processPackages', Exec) {
+    description = 'Add packages to the local APT repository'
+
+    workingDir '.'
+    commandLine 'bash', './processPackages.sh'
+}
+
+downloadPackages.mustRunAfter getGitHubToken
+processPackages.mustRunAfter downloadPackages
+
+tasks.register('download') {
+    dependsOn getGitHubToken, downloadPackages, processPackages
+}
