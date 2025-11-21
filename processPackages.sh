@@ -31,13 +31,15 @@ for release in noble bookworm trixie forky sid; do
   reprepro -b ${REPO_BASEDIR}/debian/${release} checkpool
 done
 
+COUNTS=
 for release in noble bookworm trixie forky sid; do
   echo
   echo Listing ${release}
   reprepro -b ${REPO_BASEDIR}/debian/${release} list ${release}
+  COUNTS="${COUNTS} ${release}: `reprepro -b ${REPO_BASEDIR}/debian/${release} list ${release} | wc -l`"
 done
 
 echo
 echo Errors: ${ERRORS}
 echo
-echo Done
+echo Done, package counts: ${COUNTS}
