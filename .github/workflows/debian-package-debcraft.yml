@@ -37,7 +37,7 @@ jobs:
         arch: [amd64]
     steps:
       - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Hosting ${{ github.event.inputs.hosting }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         id: checkout-github
         with:
           repository: ${{ github.event.inputs.gh_repo }}
@@ -73,7 +73,7 @@ jobs:
 
       - name: checkout debcraft
         id: checkout-debcraft
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ github.event.inputs.debcraft_repo }}
           path: debcraft
