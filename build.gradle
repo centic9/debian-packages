@@ -45,7 +45,7 @@ tasks.register('downloadPackages', JavaExec) {
     environment "GITHUB_TOKEN", gitHubToken
     mainClass = 'org.dstadler.github.packaging.DownloadPackages'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs = ['-Xmx128m']
+    jvmArgs = ['-Xmx256m']
 }
 
 tasks.register('processPackages', Exec) {
