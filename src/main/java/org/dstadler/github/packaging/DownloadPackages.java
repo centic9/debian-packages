@@ -84,6 +84,11 @@ public class DownloadPackages {
                 String name = artifact.getName();
                 System.out.println("Artifact: " + name + " at " + artifact.getUrl() + " for " + run.getName());
 
+                if (artifact.isExpired()) {
+                    System.out.println("Artifact " + artifact.getName() + " is expired");
+                    continue;
+                }
+
                 Matcher matcher = NAME_REGEX.matcher(name);
                 if (matcher.matches()) {
                     System.out.println("Match: " + matcher.group(1) + "/"  + matcher.group(2) + "/" + matcher.group(3) + "/" + matcher.group(4));
