@@ -19,7 +19,7 @@ public abstract class BaseSearch {
         String token = System.getenv("GITHUB_TOKEN");
         if (StringUtils.isNotBlank(token)) {
             System.out.println("Using provided GITHUB_TOKEN");
-            builder.withJwtToken(token);
+            builder.withJwtToken(token.trim());
         }
 
         return builder.
