@@ -2,6 +2,7 @@ package org.dstadler.github.packaging;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.github.GHArtifact;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHWorkflowRun;
@@ -35,6 +36,12 @@ public class DownloadPackages {
     private static final String ROOT_DIR = "/opt/cowbuilder/github";
 
     public static void main(String[] args) throws IOException {
+        String githubToken = System.getenv("GITHUB_TOKEN").trim();
+        if (StringUtils.isBlank(githubToken)) {
+            System.err.println("GITHUB_TOKEN environment variable not set. Without it downloading would be heavily throttled...");
+            System.exit(1);
+        }
+
         GitHub github = BaseSearch.connect();
 
         List<Artifact> artifacts = getAvailableArtifacts(github);
