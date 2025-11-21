@@ -29,7 +29,7 @@ public class TriggerBuilds {
 
     // add some other Salsa repos for building
     private static final List<Pair<String,String>> REPOS_TO_ADD_SALSA = List.of(
-        Pair.of("ottok/debcraft", "main")
+        Pair.of("debian/debcraft", "main")
     );
 
     // add some other Codeberg repos for building
@@ -61,7 +61,12 @@ public class TriggerBuilds {
             "centic9/soundkonverter-ppa",
             "centic9/subversion-19-ppa",
             "centic9/subversion-ppa",
-            "centic9/tpm2-tss-ppa"
+            "centic9/tpm2-tss-ppa",
+
+            // do not build, exclude for now
+            "centic9/libappindicator-ppa",  // "unrepresentable changes to source"
+            "centic9/tellico-ppa",          // mk-build-deps fails
+            "centic9/yt-dlp-ppa"            // FAILED test_config__ENVIRON_DEFAULTS_sanity
     );
 
     // TODO: Add some repos from Salsa, e.g. partclone and clonezilla
