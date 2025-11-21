@@ -49,15 +49,15 @@ public class DownloadPackages {
 
             // target-dir
 
-            File checkFile = new File(ROOT_DIR, name + ".chk");
+            File rootDir = new File(ROOT_DIR, artifact.distribution + "-" + artifact.architecture);
+            Preconditions.checkState(rootDir.isDirectory() || rootDir.mkdirs(),
+                    "Could not create directories at %s", rootDir);
+
+            File checkFile = new File(rootDir, name + ".chk");
             if (checkFile.exists()) {
                 System.out.println("Already downloaded: " + name);
                 continue;
             }
-
-            File rootDir = new File(ROOT_DIR, artifact.distribution + "-" + artifact.architecture);
-            Preconditions.checkState(rootDir.isDirectory() || rootDir.mkdirs(),
-                    "Could not create directories at %s", rootDir);
 
             System.out.println("Downloading " + name + " to " + rootDir);
 
