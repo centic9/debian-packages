@@ -55,7 +55,6 @@ public class DownloadPackages {
             String name = artifact.name;
 
             // target-dir
-
             File rootDir = new File(ROOT_DIR, artifact.distribution + "-" + artifact.architecture);
             Preconditions.checkState(rootDir.isDirectory() || rootDir.mkdirs(),
                     "Could not create directories at %s", rootDir);
@@ -107,7 +106,6 @@ public class DownloadPackages {
     }
 
     private static void extractArtifactZip(InputStream stream, File rootDir) throws IOException {
-
         ZipInputStream zis = new ZipInputStream(new BufferedInputStream(stream));
         ZipEntry zipEntry = zis.getNextEntry();
         while (zipEntry != null) {
@@ -123,7 +121,8 @@ public class DownloadPackages {
                     throw new IOException("Failed to create directory " + parent);
                 }
 
-                // write file content
+                // write file content (FileUtils would close the InputStream
+                // but it needs to stay open here
                 FileOutputStream fos = new FileOutputStream(newFile);
                 int len;
                 byte[] buffer = new byte[1024];
