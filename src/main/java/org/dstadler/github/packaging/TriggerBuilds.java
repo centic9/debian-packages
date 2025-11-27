@@ -34,7 +34,8 @@ public class TriggerBuilds {
 
     // add some other Codeberg repos for building
     private static final List<Pair<String,String>> REPOS_TO_ADD_CODEBERG = List.of(
-        Pair.of("Unit193/yt-dlp", "master")
+        // FAILED test/test_config.py::TestConfig::test_config__ENVIRON_DEFAULTS_sanity
+        // Pair.of("Unit193/yt-dlp", "master")
     );
 
     // allow to blacklist some repos which are not necessary anymore
