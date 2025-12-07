@@ -23,7 +23,7 @@ on:
       debcraft_ref:
         description: Allows to test with a different version of the Debcraft tool
         required: false
-        default: '3a5c6518d5f780466991af5920442a07d1cff8c8'
+        default: 'debian/0.7.0'
 
 jobs:
   build-debs:
