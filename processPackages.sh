@@ -39,7 +39,11 @@ for release in noble bookworm trixie forky sid; do
   COUNTS="${COUNTS} ${release}: `reprepro -b ${REPO_BASEDIR}/debian/${release} list ${release} | wc -l`"
 done
 
+# print out errors, but sort the list of failed deb-files and remove duplicates
 echo
-echo Errors: ${ERRORS}
+echo Errors:
+for error in `echo ${ERRORS} | xargs -n1 | sort -u | xargs`;do
+  echo "- ${error}"
+done
 echo
 echo Done, package counts: ${COUNTS}
