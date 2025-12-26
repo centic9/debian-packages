@@ -32,6 +32,7 @@ tasks.withType(Test).configureEach {
 
 def gitHubToken = new ByteArrayOutputStream()
 tasks.register('getGitHubToken', Exec) {
+    group = '_packages'
     description = 'Try to get GITHUB_TOKEN from the password managed'
 
     workingDir '.'
@@ -40,6 +41,7 @@ tasks.register('getGitHubToken', Exec) {
 }
 
 tasks.register('downloadPackages', JavaExec) {
+    group = '_packages'
     description = 'Fetch built packages from the GitHub Action artifacts'
 
     environment "GITHUB_TOKEN", gitHubToken
@@ -49,6 +51,7 @@ tasks.register('downloadPackages', JavaExec) {
 }
 
 tasks.register('processPackages', Exec) {
+    group = '_packages'
     description = 'Add packages to the local APT repository'
 
     workingDir '.'
@@ -59,5 +62,6 @@ downloadPackages.mustRunAfter getGitHubToken
 processPackages.mustRunAfter downloadPackages
 
 tasks.register('download') {
+    group = '_packages'
     dependsOn getGitHubToken, downloadPackages, processPackages
 }
