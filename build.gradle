@@ -37,7 +37,7 @@ tasks.register('getGitHubToken', Exec) {
 
     workingDir '.'
     commandLine 'bash', '-c', 'pass ls Programming/GitHub | grep Token-Repository | sed -e \'s/Token-Repository: //g\''
-    standardOutput = gitHubToken;
+    standardOutput = gitHubToken
 }
 
 tasks.register('downloadPackages', JavaExec) {
