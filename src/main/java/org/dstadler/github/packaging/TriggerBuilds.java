@@ -30,6 +30,7 @@ public class TriggerBuilds {
     // add some other Salsa repos for building
     private static final List<Pair<String,String>> REPOS_TO_ADD_SALSA = List.of(
         Pair.of("debian/debcraft", "main"),
+        Pair.of("python-team/packages/python-pysnmp4", "debian/trixie-backports"),
         Pair.of("centic/borgbackup", "noble_backport"),
         Pair.of("centic/debian-installer-launcher", "master")
     );
