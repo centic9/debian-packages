@@ -12,9 +12,12 @@ on:
         required: true
         default: 'ppa/4.0.43-1'
       hosting:
+        type: choice
         description: 'Specify salsa if gh_repo and gh_ref point to a repository on the Debian Salsa hosting platform or codeberg for hosting on codeberg.org'
-        required: false
-        default: 'github'
+        options:
+          - github
+          - salsa
+          - codeberg
       debcraft_repo:
         description: Allows to test with a different version of the Debcraft tool
         required: false
