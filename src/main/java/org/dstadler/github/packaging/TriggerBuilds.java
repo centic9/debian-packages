@@ -106,23 +106,26 @@ public class TriggerBuilds {
                         });
             }
         }
-        System.out.println("Found " + builds.size() + " repos before applying ignores");
+        System.out.println("Found " + builds.size() + " repos");
         builds.addAll(REPOS_TO_ADD_GITHUB);
         builds.addAll(REPOS_TO_ADD_SALSA);
         builds.addAll(REPOS_TO_ADD_CODEBERG);
+        System.out.println("Found " + builds.size() + " repos after applying additional repos");
 
         List<DownloadPackages.Artifact> artifacts = DownloadPackages.getAvailableArtifacts(github);
-        System.out.println("Found " + artifacts.size() + " artifacts and " + builds.size() + " repos to build: " + builds);
+        System.out.println("Found " + artifacts.size() + " artifacts, filtering repos with available builds");
 
         // remove successfully built items
         // TODO: check if there is a newer build available on the branch
         // TODO: check per "distribution"
         builds.removeIf(build ->
                 artifacts.stream().anyMatch(a ->
+                        // use this to rebuild all that are missing on a specific distribution
+                        // a.distribution.equals("resolute") &&
                         a.repo.equals(build.getKey().replace("/", "_")) &&
                         a.ref.equals(build.getValue().replace("/", "_"))));
 
-        System.out.println("Found " + builds.size() + " repos to build: " + builds);
+        System.out.println("Found " + builds.size() + " repos which need building: " + builds);
 
         // trigger workflow builds
         System.out.println("Opening repository " + REPO_DEBIAN_PACKAGES);
