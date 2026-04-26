@@ -13,7 +13,7 @@ DEB_ARCH=amd64
 
 ERRORS=
 
-for release in noble bookworm trixie forky sid; do
+for release in noble resolute bookworm trixie forky sid; do
   echo
   echo Publishing ${release}
   for i in `find ${DEB_BASEDIR}/${release}-${DEB_ARCH} -name \*.deb`; do
@@ -32,7 +32,7 @@ for release in noble bookworm trixie forky sid; do
 done
 
 COUNTS=
-for release in noble bookworm trixie forky sid; do
+for release in noble resolute bookworm trixie forky sid; do
   echo
   echo Listing ${release}
   reprepro -b ${REPO_BASEDIR}/debian/${release} list ${release}
