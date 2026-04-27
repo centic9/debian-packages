@@ -106,7 +106,7 @@ jobs:
 
       - name: save binary artifact
         # https://github.com/actions/upload-artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.artifact-name.outputs.ARTIFACT_NAME }}
           # https://github.com/actions/upload-artifact?tab=readme-ov-file#upload-using-multiple-paths-and-exclusions
