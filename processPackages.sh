@@ -19,7 +19,13 @@ for release in noble resolute bookworm trixie forky sid; do
   for i in `find ${DEB_BASEDIR}/${release}-${DEB_ARCH} -name \*.deb`; do
     echo Publishing deb ${i};
     # ignore errors for now to not fail when packages are built multiple times with the same version
-    reprepro -b ${REPO_BASEDIR}/debian/${release} --component main includedeb ${release} ${i} || ERRORS="${ERRORS} `basename $i`"
+    RET=0
+    reprepro -b ${REPO_BASEDIR}/debian/${release} --component main includedeb ${release} ${i} || RET=$?
+    # Try with forced "priority" as some packages do not specify "optional" any more, e.g. debcraft
+    if [ $RET -eq 255 ]; then
+      echo "Retrying ${i} with fixed priority: $RET"
+      reprepro -b ${REPO_BASEDIR}/debian/${release} --component main --priority optional includedeb ${release} ${i} || ERRORS="${ERRORS} `basename $i`"
+    fi
   done
 
   echo
