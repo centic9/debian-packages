@@ -199,7 +199,6 @@ def generate_html(data):
 
     .table-wrap {{
       margin: 0;
-      overflow-x: auto;
       border-radius: 12px;
       border: 1px solid #1e2a3a;
       box-shadow: 0 4px 32px rgba(0,0,0,0.5);
@@ -209,6 +208,7 @@ def generate_html(data):
       width: 100%;
       border-collapse: collapse;
       font-size: 0.82rem;
+      table-layout: fixed;
     }}
 
     thead tr {{
@@ -223,18 +223,16 @@ def generate_html(data):
       text-align: left;
       font-weight: 600;
       border-bottom: 2px solid #334155;
-      white-space: nowrap;
+      word-break: break-word;
     }}
 
     th.pkg-col {{
       color: #94a3b8;
-      min-width: 190px;
-      width: 190px;
+      width: 12%;
     }}
 
     th.dist-header {{
       color: #a5b4fc;
-      min-width: 155px;
     }}
 
     .dist-name {{
@@ -272,7 +270,7 @@ def generate_html(data):
       font-size: 0.8rem;
       color: #e2e8f0;
       font-weight: 500;
-      white-space: nowrap;
+      word-break: break-word;
     }}
 
     td.missing {{
