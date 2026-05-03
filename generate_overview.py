@@ -111,9 +111,20 @@ def generate_html(data):
     rows_html = []
     for pkg_name in all_packages:
         pkg_data = data[pkg_name]
+        # Green row if every distribution has an entry and all versions are identical
+        all_versions = [
+            entry["version"]
+            for code in DIST_CODES
+            for entry in pkg_data.get(code, [])
+        ]
+        uniform = (
+            len(all_versions) == len(DIST_CODES)
+            and len(set(all_versions)) == 1
+        )
+        row_class = ' class="all-same"' if uniform else ''
         cells = "\n        ".join(make_cell(pkg_data.get(code, []), code) for code in DIST_CODES)
         row = (
-            f'    <tr>\n'
+            f'    <tr{row_class}>\n'
             f'      <td class="pkg-name">{escape(pkg_name)}</td>\n'
             f'      {cells}\n'
             f'    </tr>'
@@ -292,6 +303,18 @@ def generate_html(data):
 
     .hidden {{
       display: none !important;
+    }}
+
+    tr.all-same td.pkg-name {{
+      color: #86efac;
+    }}
+
+    tr.all-same td.present a {{
+      color: #4ade80;
+    }}
+
+    tr.all-same td.present a:hover {{
+      color: #86efac;
     }}
 
     footer {{
