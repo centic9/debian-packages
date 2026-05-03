@@ -138,13 +138,12 @@ def generate_html(data):
       background: #0f1117;
       color: #e2e8f0;
       margin: 0;
-      padding: 2rem 1rem;
+      padding: 2rem 0.5rem;
       min-height: 100vh;
     }}
 
     header {{
-      max-width: 1400px;
-      margin: 0 auto 2rem;
+      margin: 0 0 2rem;
     }}
 
     h1 {{
@@ -188,8 +187,7 @@ def generate_html(data):
     }}
 
     .table-wrap {{
-      max-width: 1400px;
-      margin: 0 auto;
+      margin: 0;
       overflow-x: auto;
       border-radius: 12px;
       border: 1px solid #1e2a3a;
@@ -277,7 +275,7 @@ def generate_html(data):
       color: #38bdf8;
       text-decoration: none;
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      font-size: 0.60rem;
+      font-size: 0.65rem;
       transition: color 0.15s;
     }}
 
@@ -297,8 +295,7 @@ def generate_html(data):
     }}
 
     footer {{
-      max-width: 1400px;
-      margin: 1.5rem auto 0;
+      margin: 1.5rem 0 0;
       font-size: 0.8rem;
       color: #374151;
       text-align: center;
