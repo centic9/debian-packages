@@ -36,7 +36,9 @@ public class TriggerBuilds {
         Pair.of("georgesk/clonezilla", "debian/5.15.28-1"),
         Pair.of("python-team/packages/python-pysnmp4", "debian/trixie-backports"),
         Pair.of("centic/borgbackup", "noble_backport"),
-        Pair.of("centic/debian-installer-launcher", "master")
+        Pair.of("centic/debian-installer-launcher", "master"),
+        Pair.of("go-team/packages/golang-github-anacrolix-dms", "master"),  // cannot be built on older releases, many missing dependencies
+        Pair.of("go-team/packages/rclone", "debian/sid")
     );
 
     // add some other Codeberg repos for building
