@@ -39,7 +39,7 @@ jobs:
         # , arm64, armhf
         arch: [amd64]
     steps:
-      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Hosting ${{ github.event.inputs.hosting }}
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Github ${{ github.event.inputs.hosting }}
         uses: actions/checkout@v6
         id: checkout-github
         with:
@@ -63,7 +63,7 @@ jobs:
           echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         if: ${{ github.event.inputs.hosting == 'salsa' }}
 
-      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Github ${{ github.event.inputs.hosting }}
+      - name: checkout package sources of ${{ github.event.inputs.gh_repo }}@${{ github.event.inputs.gh_ref }} on ${{ matrix.codename }}-${{ matrix.arch }} with Codeberg ${{ github.event.inputs.hosting }}
         id: checkout-codeberg
         # Removed "--depth=1" as otherwise some of the git-commands used by debcraft and gbp will fail
         # the checkout-action does this somehow, but I could not yet find out how this can be done with git commands directly
